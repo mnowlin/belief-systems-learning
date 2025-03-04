@@ -1,0 +1,44 @@
+---
+title: "Belief System Networks and Policy Learning"
+author:
+  - "Matthew C. Nowlin^[Associate Professor, Department of Political Science, College of Charleston. Email: [nowlinmc@cofc.edu](mailto:nowlinmc@cofc.edu)]"
+bibliography: /Users/nowlinmc/Dropbox/refs.bib
+csl: /Users/nowlinmc/Dropbox/Projects/Manuscript-Files/csl/american-political-science-association.csl
+fig-cap-location: top
+fontfamily: ebgaramond
+link-bibliography: false
+format: 
+  pdf:
+    include-in-header: 
+      text: |
+        \usepackage{setspace}
+        \usepackage{dcolumn}
+        \usepackage{float}
+        \usepackage{amsmath}
+        \usepackage{float}
+        \addtokomafont{disposition}{\rmfamily}
+  docx:
+    reference-doc: /Users/nowlinmc/Dropbox/Projects/Manuscript-Files/reference.docx 
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_knit$set(root.dir = normalizePath(".."))
+```
+
+
+
+\newpage
+
+# Appendix
+\setcounter{table}{0}
+\renewcommand{\thetable}{A\arabic{table}}
+
+\newpage
+
+# References
+\setlength{\parindent}{-0.2in}
+\setlength{\leftskip}{0.2in}
+\setlength{\parskip}{8pt}
+\vspace*{-0.2in}
+\singlespace
+\noindent
