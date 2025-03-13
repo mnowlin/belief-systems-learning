@@ -21,17 +21,273 @@ format:
     reference-doc: /Users/nowlinmc/Dropbox/Projects/Manuscript-Files/reference.docx 
 ---
 
-```{r setup, include=FALSE, message=FALSE}
+**Abstract**: The Advocacy Coalition Framework centers belief systems, coalitions, and policy-oriented learning in its explanations of policy development. According to the ACF, belief systems are hierarchically tiered across three different types of beliefs, ranging from abstract and applicable to multiple policy subsystems to specific and relevant to particular policy instruments. Deep core beliefs are the most abstract, and they inform policy core beliefs that, in turn, inform secondary beliefs about specific policy approaches. Recent work has examined belief systems as networks, where beliefs are nodes and the correlations between beliefs are the edges. In a belief system network, the types of beliefs -- deep core, policy core, and secondary beliefs -- occupy various places in the network and perform various functions. For example, deep core beliefs may be high in betweenness centrality in the network, thereby providing a gatekeeping function for other beliefs, whereas secondary beliefs may be high in strength centrality, indicating that they are connected to the other types of beliefs. Within the ACF, policy-orientated learning is associated with change or reinforcement of beliefs; however, no work has examined policy learning in the context of belief system networks. In this paper, we pool 17 years (2006-2023) of public opinion data about nuclear energy to examine learning as changes in the configuration of belief system networks over time. Specifically, we develop a belief system network of nuclear energy that includes deep core beliefs (political ideology, environmental orientation), policy core beliefs (risks and benefits of nuclear energy), and secondary aspects (support for constructing more nuclear power plants). Then, we use dynamic network analysis to explore learning (i.e., changes in the network structure over time), particularly in response to the Fukushima nuclear accident, a significant exogenous shock that likely altered the belief system network of nuclear energy.
+
+_Paper presented at the Annual Meeting of the Midwest Political Science Association, April 2025_ 
+
+```{r setup}
+#| include: false
+#| message: false
 knitr::opts_knit$set(root.dir = normalizePath(".."))
+```
+
+```{r load data and packages}
+#| echo: false
+#| include: false
+#| warning: false
+
+## packages 
+library("tidyverse")
+library("bootnet")
+library("qgraph")
+library("ggplot2")
+library("egg")
+library("car")
+library("ppcor")
+library("modelsummary")
+library("networktools")
+library("NetworkComparisonTest")
+
+## load data 
+beliefData <- read.csv("data/nukeData.csv")
+# nrow(beliefData)
+# names(beliefData)
 ```
 
 
 
-\newpage
+# Introduction 
 
-# Appendix
-\setcounter{table}{0}
-\renewcommand{\thetable}{A\arabic{table}}
+
+# Belief System Networks 
+
+
+# Policy Oriented-Learning
+
+
+# Data and Measures 
+
+
+## Beliefs 
+
+
+## Belief System Network 
+
+
+# Results
+
+```{r estimate network for full sample}
+#| echo: false
+#| warning: false
+
+# Complete Network
+beliefNetVars <- c("ideology","envt_oren",
+                   "rskben",
+                   "morePlants")
+beliefNetData <- beliefData[beliefNetVars]
+
+beliefNetNetwork <- estimateNetwork(beliefNetData, 
+                                   default = "EBICglasso",
+                                   corMethod = "cor_auto",
+                                   tuning = 0.5)
+
+#groups <- factor(c(
+#  rep("Deep Core", 7), 
+#  rep("Policy Core", 3),
+#  rep("Secondary", 7)
+#))
+
+#groups <- factor(as.character(groups), levels = c("Deep Core", "Policy Core", "Secondary"))
+
+#png(filename = "manuscript/netPlot.png", width = 1024, height = 768)
+#plot(beliefNetNetwork, layout = "spring", groups=groups, negDashed = T, legend = F, label.cex = .8, label.scale = T, details = F, theme = "gray")
+#dev.off()
+
+```
+
+
+overall network, all years 
+  centrality measures 
+
+```{r plot network for full sample}
+#| message: false
+#| results: asis
+#| warning: false
+#| echo: false
+#| label: fig-beliefNetNetwork
+#| fig-cap: Belief System Network
+
+groups <- factor(c(
+  rep("Deep Core", 2), 
+  rep("Policy Core", 1),
+  rep("Secondary", 1)
+))
+
+groups <- factor(as.character(groups), levels = c("Deep Core", "Policy Core", "Secondary"))
+
+plot(beliefNetNetwork, layout = "spring", groups=groups, negDashed = T, legend = F, label.cex = .8, label.scale = T, details = F, theme = "gray")
+
+# summary(beliefNetNetwork)
+# partial correlation matrix
+# beliefNetNetwork$results$optnet
+
+
+```
+
+
+```{r centrality measures for full sample}
+#| echo: false
+#| include: false
+#| warning: false
+
+#set.seed(1287) 
+#net_boot <- bootnet(beliefNetNetwork, nBoots = 1000,
+#                     default = "EBICglasso",
+#                     statistics = c("betweenness","closeness","strength","edge"),
+#                     type = "nonparametric", nCores = 1)
+
+#save(net_boot, file= paste0(getwd(),"/data/network_data_for_replication.RData"))
+
+load(paste0(getwd(),"/data/network_data_for_replication.RData"))
+
+summary(net_boot)
+
+
+net_boot_whole <- net_boot$bootTable
+# net_boot_strength <- net_boot_whole %>%
+#  filter(type=="strength") %>%
+#  filter(id == c("US \nrisk","GW \nworry"))
+
+net_boot_stat<-summary(net_boot)
+net_boot_stat_cent <- net_boot_stat %>%
+  filter(type!="edge")
+
+cent_stat <- net_boot_stat_cent %>%
+  dplyr::select(type, id, mean, CIlower, CIupper)
+cent_stat$id
+
+labels2 <- c("CapTrade","EPA","GeoEng","IntAgree","Nuclear","Renew","Tax","egal","fatal","happening",
+             "hier","ideology","indiv","nepScale","partisan","risk","sciconsensus")
+
+cent_stat$labels <- rep(labels2, 3)
+
+str_cent<- cent_stat %>%
+  filter(type == "strength")
+
+str_centP <- ggplot(data = str_cent, aes(x=reorder(labels, mean), y=mean)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin=(CIlower), ymax=(CIupper)), stat = "identity", position=position_dodge(0.1), width=.1) +
+  coord_flip() +
+  xlab("") +
+  ylab("") + 
+  ggtitle("Strength") +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = "dotted", alpha = .3) +
+  theme(plot.title = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic"))
+
+close_cent<- cent_stat %>%
+  filter(type == "closeness")
+
+close_centP <- ggplot(data = close_cent, aes(x=reorder(labels, mean), y=mean)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin=(CIlower), ymax=(CIupper)), stat = "identity", position=position_dodge(0.1), width=.1) +
+  coord_flip() +
+  xlab("") +
+  ylab("") + 
+  ggtitle("Closeness") +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = "dotted", alpha = .3) +
+  theme(plot.title = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic"))
+
+betw_cent <- cent_stat %>%
+  filter(type == "betweenness")
+
+betw_centP <- ggplot(data = betw_cent, aes(x=reorder(labels, mean), y=mean)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin=(CIlower), ymax=(CIupper)), stat = "identity", position=position_dodge(0.1), width=.1) +
+  coord_flip() +
+  xlab("Beliefs") +
+  ylab("") + 
+  ggtitle("Betweenness") +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = "dotted", alpha = .3) +
+  theme(plot.title = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic"))
+
+centralPlots <- ggarrange(betw_centP, close_centP, str_centP, ncol=3, nrow=1)
+ggsave("manuscript/centralPlots.png", centralPlots, width = 10, height = 4)
+
+betw_centO <- betw_cent %>% arrange(desc(mean))
+close_centO <- close_cent %>% arrange(desc(mean))
+str_centO <- str_cent %>% arrange(desc(mean))
+
+cent_stat$itemtype[cent_stat$node1=="hier" |
+                     cent_stat$node1=="egal" |
+                     cent_stat$node1=="indiv" |
+                     cent_stat$node1=="fatal" |
+                     cent_stat$node1=="ideology" |
+                     cent_stat$node1=="partisan" |
+                     cent_stat$node1=="nepScale"] <- "Deep\nCore"
+cent_stat$itemtype[cent_stat$node1=="happening" |
+                     cent_stat$node1=="risk" |
+                     cent_stat$node1=="sciconsensus"] <- "Policy\nCore"
+cent_stat$itemtype[cent_stat$node1=="CapTrade" |
+                     cent_stat$node1=="EPA" |
+                     cent_stat$node1=="GeoEng" |
+                     cent_stat$node1=="IntAgree" |
+                     cent_stat$node1=="Nuclear" |
+                     cent_stat$node1=="Renew" |
+                     cent_stat$node1=="Tax"] <- "Secondary"
+
+cent_stat$measure <- factor(as.character(cent_stat$type), levels = c("betweenness", "closeness", "strength"))
+cent_stat$measure <- plyr::revalue(cent_stat$measure, c("betweenness" = "Betweenness",
+                                                        "closeness" = "Closeness",
+                                                        "strength" = "Strength"))
+cent_stat$itemtype <- factor(as.character(cent_stat$itemtype), levels = c("Secondary", "Policy\nCore", "Deep\nCore"))
+
+centDP <- subset(cent_stat, itemtype=="Deep\nCore" | itemtype=="Policy\nCore")
+centPS <- subset(cent_stat, itemtype=="Policy\nCore" | itemtype=="Secondary")
+centDS <- subset(cent_stat, itemtype=="Deep\nCore" | itemtype=="Secondary")
+
+# differences are not significant
+btwDP.t <- t.test(mean ~ itemtype, data = subset(centDP, measure == "Betweenness"))
+btwPS.t <- t.test(mean ~ itemtype, data = subset(centPS, measure == "Betweenness"))
+btwDS.t <- t.test(mean ~ itemtype, data = subset(centDS, measure == "Betweenness"))
+
+# functions for centrality by belief type plot
+ci <- function(x) (sd(x)/sqrt(length(x))*qt(0.975,df=length(x)-1) ) #function to compute size of confidence intervals
+
+data_summary <- function(x) {
+  m <- mean(x)
+  ymin <- m-ci(x)
+  ymax <- m+ci(x)
+  return(c(y=m,ymin=ymin,ymax=ymax))
+}
+
+centP <- ggplot(cent_stat, aes(x = factor(itemtype), y = mean)) +
+  geom_point(size = 2, position=position_jitter(width=.05,height=0), alpha = .5) +
+  facet_wrap(~measure, ncol = 3, scales = "free_y") +
+  stat_summary(fun.data=data_summary, geom = "crossbar", size = .5, width = .3, color = "black")+
+  ylab("Centrality")+
+  theme_minimal() +
+  theme(plot.title = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic"),
+        axis.title.x=element_blank())
+
+ggsave("manuscript/centP.png", centP, width = 10, height = 4)
+
+```
+
+
+
+pre and post Fukushima networks 
+  centrality measures 
+  network comparison? 
+
+# Discussion and Conclusion 
+
 
 \newpage
 
