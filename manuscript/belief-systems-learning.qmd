@@ -50,28 +50,146 @@ library("NetworkComparisonTest")
 
 ## load data 
 beliefData <- read.csv("data/nukeData.csv")
-# nrow(beliefData)
-# names(beliefData)
+#beliefData <- subset(beliefData, year >= 2008 & year <= 2015)
+beliefData <- na.omit(beliefData)
+#nrow(beliefData)
+#names(beliefData)
+
+## risk measures 
+beliefData$rsk <- round((beliefData$nrsk1+beliefData$nrsk2+beliefData$nrsk3+beliefData$nrsk4)/4, 2)
+rskA <- psy::cronbach(data.frame(beliefData$nrsk1,beliefData$nrsk2,beliefData$nrsk3,beliefData$nrsk4))
+
+## benefit measures 
+beliefData$ben <- round((beliefData$nben1+beliefData$nben2+beliefData$nben3+beliefData$nben4)/4, 2)
+benA <- psy::cronbach(data.frame(beliefData$nben1,beliefData$nben2,beliefData$nben3,beliefData$nben4))
+
+## data pre and post Fukushima 
+beliefDataPre <- subset(beliefData, beliefData$fuk==0)
+beliefDataPost <- subset(beliefData, beliefData$fuk==1)
+
+## recode to remove 0's for network comparison
+beliefData$envt_oren <- beliefData$envt_oren+1
+beliefData$nrsk1 <- beliefData$nrsk1+1
+beliefData$nrsk2 <- beliefData$nrsk2+1
+beliefData$nrsk3 <- beliefData$nrsk3+1
+beliefData$nrsk4 <- beliefData$nrsk4+1
+beliefData$nben1 <- beliefData$nben1+1
+beliefData$nben2 <- beliefData$nben2+1
+beliefData$nben3 <- beliefData$nben3+1
+beliefData$nben4 <- beliefData$nben4+1
+beliefData$energyWorry <- beliefData$energyWorry+1
 ```
 
 
 
 # Introduction 
 
+The Advocacy Coalition Framework (ACF) is one of the leading approaches to understand the policymaking process. Since its inception, the focus of the ACF has been on belief systems, policy learning, and policy change []. In brief, the ACF posits that policy actors hold beliefs about policy issues and processes and those beliefs are interconnected and form a belief system. Policy actors form into coalitions based on shared beliefs and work together in coalitions to achieve policy goals. Often policy change is a goal for one or more coalition, and policy-oriented learning has been a central mechanism of policy change within the ACF. Policy-oriented learning involves changes in beliefs within and across coalitions.   
+
+Belief systems within the ACF are hierarchical with three types of beliefs where the more abstract beliefs influence the less abstract beliefs. Deep core beliefs are the most abstract and influential, shaping beliefs across most policy issues and subsystems. Next are policy core beliefs that shape beliefs regarding specific policy subsystems and issues. Finally, secondary beliefs are the least abstract and involve beliefs about ways of achieving the goals of policy core beliefs. Related to beliefs are policy preferences, which are shaped by beliefs but are expressed as support of opposition to specific policy instruments [].      
+
+As noted, within the ACF belief systems are thought to be hierarchically structured. However, recent work has argued that belief systems can be understood as networks [], including within the ACF []. A network approach to belief systems sees the beliefs as the nodes in the network, and the connections between the nodes as the edges. Like other types of networks, the edges between the nodes create a system of interconnections, and within that system some nodes are more central, or influential than other nodes. 
+
+In this paper, we combine an understanding of belief systems as networks with policy-oriented learning. Specifically, we posit that policy-oriented learning involves changes in the structure of the belief system network. Such structure changes include shifting centrality of various beliefs. We test this supposition using several years worth of survey data of the US public regarding nuclear energy. The data was collected between 2008 and 2023, which allows us to examine the impact of the 2011 Fukushima nuclear accident on beliefs about the risk and benefits or nuclear energy and support for constructing new nuclear power plants in the US. Overall, we find ... 
+
+
 
 # Belief System Networks 
 
+Traditionally, within the ACF, belief systems are seen as hierarchical, with clearly delineated paths of influence, or constraint, between the various types of beliefs within the hierarchy. Constraint is a function of the interdependence of beliefs, and means that one belief influences another to keep beliefs consistent. Within the belief system hierarchy, the more general beliefs constrain the more specific beliefs, with deep core beliefs constraining policy core beliefs, and both deep and policy core belief constrain secondary beliefs.  
+
+
+A belief system network approach to belief systems in the ACF 
+
+
+While the type of belief remains important, a network approach also examines the function of the belief within the network. This allows for the function of the various types to vary across policy issues and subsystems. 
+
+The function of a belief within a belief system is measured by the various types of centrality.  
+
+For example, in some subsystems deep core beliefs maybe the most c, yet in others 
+
+
+Deep core beliefs are foundational and serve as, "fundamental normative values and ontological axioms, including the nature of human beings, norms for social justice, and the ordering of primary values (e.g., individual freedom and social equality)" [@nohrstedtAdvocacyCoalitionFramework2023, 133]. Examples of deep core belief include political ideology and cultural worldviews, and deep core beliefs are applicable across all policy issues, act as filters for the processing of policy information, and shape more specific policy core and secondary beliefs. 
+
+
+
+
+
+functions
 
 # Policy Oriented-Learning
 
 
 # Data and Measures 
 
+To examine the impact of the Fukushima accident on beliefs about nuclear energy, we draw on public opinion data collected between 2008-2023 from nationwide surveys of US residents annually.^[However, 2016 and 2017 are not included because of question wording changes.] In each survey, respondents were asked about their views on energy and environmental issues, including nuclear energy. Additionally, the surveys gauged the deep core beliefs of respondents by including measures of political ideology and environmental orientation. The surveys were developed and administered by the Institute for Public Policy Research and Analysis at the University of Oklahoma. The samples for each survey were recruited by firms including Survey Sampling International and Qualtrics, and quotas were used to ensure that the samples were representative of the US population. Overall, the combined surveys include `r nrow(beliefData)` respondents, missing data removed. Next, we discuss the various measures we used to examine the dimensions of nuclear energy and policy preferences associated with nuclear energy. 
+
 
 ## Beliefs 
 
+### Deep Core Beliefs 
 
-## Belief System Network 
+For deep core beliefs, we use a measure of self-reported political ideology. Among the US public, support for nuclear energy is polarized along ideological lines with conservatives, on average, more supportive of nuclear energy than liberals [@hawesClimateSciencePolitics2022; @kuklinskiCitizenKnowledgeChoices1982; @besleyImpactAccidentAttention2014; @mcbethPoliticalIdeologyNuclear2023]. To measure political ideology, respondents were asked, "On a scale of political ideology, individuals can be arranged from strongly liberal to strongly conservative. Which of the following categories best describes your views?", with 1 indicating strongly liberal, 4 = middle of the road, and 7 = strongly conservative. The mean on the political ideology scale is `r round(mean(beliefData$ideology, na.rm = TRUE),3)`, which is middle of the road.
+
+The measure of environmental orientation combined and averaged two questions, one about the fragility of nature and the second about how threatened the natural environment is. Each question used a 0 to 10 scale. In addition, I created dummy variables for high environmental orientation, with a value of 8 or more on the 0 to 10 coded as 1, and low environmental orientation, with a value of 5 or less coded as 1.^[5 was chosen as the cut-off for low environmental orientation because a number less than 5 resulted in a low sample size.]  
+
+The two questions for environmental orientation were: 
+
+> _On a scale from zero to ten, where zero means that nature/mother nature is robust and not easily damaged and ten means nature is fragile and easily damaged, how do you view nature?_ 
+
+> _On a scale from zero to ten, where zero means the natural environment is not at all threatened and ten means the natural environment is on the brink of disaster, how do you assess the current state of the natural environment?_ 
+
+The scales were combined and averaged, and the mean of the combined scales is `r round(mean(beliefData$envt_oren, na.rm = TRUE),2)`.
+
+
+worry about energy 
+
+### Policy Core Beliefs 
+
+To explore the issue dimensions of nuclear energy, we rely on a set of questions regarding the risks and benefits of nuclear energy. The assumption is that views about the risks and benefits are the key drivers of how the issue of nuclear energy is defined, and that weighting of those dimensions shape the policy core beliefs of the nuclear energy issue.     
+
+Respondents were asked to rate, on a zero to ten scale, their perceived risks of nuclear energy across four dimensions of risk, including an accident at a nuclear power plant, an accident during transportation or storage of nuclear materials, a terrorist attack on a nuclear plant, and diversion of fuel to make a nuclear weapon. Exact question wording was as follows:  
+
+> First we want to know about your beliefs concerning some of the possible risks associated with nuclear energy use in the U.S. Please consider both the likelihood of a nuclear event occurring and its potential consequences when evaluating the risk posed by each of the following on a scale from zero to ten, where zero means no risk and ten means extreme risk. [_Statements were presented in random order_]
+
+* **nrsk1 (Plant Accident)**: An event at a U.S. nuclear power plant within the next 20 years that results in the release of large amounts of radiation
+
+* **nrsk2 (Transportation Accident)**: An event during the transportation and temporary storage of spent nuclear fuel from nuclear power plants in the U.S. within the next 20 years that results in the release of large amounts of radiation 
+
+* **nrsk3 (Terrorist Attack)**: A terrorist attack at a U.S. nuclear power plant within the next 20 years that results in the release of large amounts of radiation
+
+* **nrsk4 (Weapon)**: The diversion of nuclear fuel from a nuclear power plant in the U.S. within the next 20 years for the purpose of building a nuclear weapon
+
+Similarly, respondents were asked about the benefits of nuclear energy across four dimensions, including no greenhouse gases, a source of reliable power, contributions to US energy independence, and reduced damage to the environmental compared to coal or oil and gas extraction. The questions included: 
+
+> Next we want to know about your beliefs concerning some of the possible benefits associated with nuclear energy use in the U.S. Please evaluate each of these possible benefits of nuclear energy use on a scale from zero to ten, where zero means not at all beneficial and ten means extremely beneficial. [_Statements were presented in random order_]  
+
+* **nben1 (No GHG)**: Reducing environmental threats because the generation of nuclear energy does not produce greenhouse gases that are believed to cause climate change 
+
+* **nben2 (Reliable Power)**: Reliable power because nuclear energy generates large amounts of electricity and is not affected by weather conditions, such as low rainfall or no wind
+
+* **nben3 (Energy Independence)**: Greater U.S. energy independence because nuclear energy production does not require oil or gas from foreign sources
+
+* **nben4 (Reduced Environmental Damage)**: Reduced environmental damage because of less need for mining coal or extracting oil and gas 
+
+
+
+### Secondary Belief / Policy Preferences 
+
+To measure policy preferences, we examine support for building more nuclear power plants in the US. Specifically, we averaged responses on two questions, with one question regarding support for adding additional nuclear reactors at existing nuclear power plants and adding new reactors at new locations in the US.^[We do not have a measure of secondary beliefs, rather we assume that secondary beliefs are implied by policy preferences.] 
+
+> Using a scale from one to seven, where one means _strongly oppose_ and seven means _strongly support_, how do you feel about constructing additional nuclear reactors at the sites of existing nuclear power plants in the U.S.?
+
+> Using the same scale from one to seven, where one means _strongly oppose_ and seven means _strongly support_, how do you feel about constructing additional nuclear power plants at new locations in the U.S.?
+
+For analysis, we combine and average the two scale into a single one to seven measure of support for more nuclear energy plants. The average support for more nuclear plants is `r round(mean(beliefData$morePlants, na.rm = TRUE),3)`. 
+
+
+## Analysis 
+
+Analyzing a belief system network uses similar procedures as other types of networks such as social or informational. However, with a belief system network the nodes are beliefs and the edges are the connections between the beliefs. A common approach in belief system networks and other psychological networks is to use a Gaussian graphical model (GGM) [@epskampBriefReportEstimating2017]. In a GGM the edges, or connections between beliefs, are partial correlation coefficients, which means that the edges represent the correlations between beliefs controlling for the other beliefs in the network. In addition, we use a "least absolute shrinkage and selection operator" (LASSO), which is commonly used in belief networks, to reduce small correlation coefficients to zero [@brandtWhatCentralPolitical2019; @friedmanSparseInverseCovariance2008; @epskampTutorialRegularizedPartial2018]. The following network estimates were generated using the `bootnet` and `qgraph` packages in `R` [@epskampQgraphNetworkVisualizations2012; @epskampBootnetBootstrapMethods2023]. 
+
+In the following analysis, we estimate a belief system network that uses the full sample as well as a belief system networks before the Fukushima accidents (2008-2011) and a network after Fukushima (2012-2023). We also examined betweenness, closeness, and strength centrality for the overall network and the pre-and-post Fukushima networks. To estimate the centrality measures we use a bootstrapping procedure using 1000 resamples of the data. The procedure was performed in `R` using the `bootnet` package [@epskampBootnetBootstrapMethods2023; @epskampTutorialRegularizedPartial2018]. The results of the bootstrap method show the estimated centrality as well as the 95% confidence interval for each measure including betweenness, closeness, and strength. Finally, we performed a network comparison test to examine the differences between the nuclear energy belief system network pre and post Fukushima. 
 
 
 # Results
@@ -81,8 +199,9 @@ beliefData <- read.csv("data/nukeData.csv")
 #| warning: false
 
 # Complete Network
-beliefNetVars <- c("ideology","envt_oren",
-                   "rskben",
+beliefNetVars <- c("ideology","envt_oren", "energyWorry",
+                   "nrsk1", "nrsk2", "nrsk3", "nrsk4", 
+                   "nben1", "nben2", "nben3", "nben4",
                    "morePlants")
 beliefNetData <- beliefData[beliefNetVars]
 
@@ -90,24 +209,11 @@ beliefNetNetwork <- estimateNetwork(beliefNetData,
                                    default = "EBICglasso",
                                    corMethod = "cor_auto",
                                    tuning = 0.5)
-
-#groups <- factor(c(
-#  rep("Deep Core", 7), 
-#  rep("Policy Core", 3),
-#  rep("Secondary", 7)
-#))
-
-#groups <- factor(as.character(groups), levels = c("Deep Core", "Policy Core", "Secondary"))
-
-#png(filename = "manuscript/netPlot.png", width = 1024, height = 768)
-#plot(beliefNetNetwork, layout = "spring", groups=groups, negDashed = T, legend = F, label.cex = .8, label.scale = T, details = F, theme = "gray")
-#dev.off()
+#beliefNetNetwork #for number of edges and connections 
 
 ```
 
-
-overall network, all years 
-  centrality measures 
+We first examine the overall nuclear energy belief system network for all years, 2008-2023, pooled. The network includes deep core beliefs (political ideology, environmental orientation, and energy worry), policy core beliefs (the risks and benefits of nuclear energy), and secondary beliefs/policy preferences (support for more nuclear power plants). The nuclear energy belief network is shown in @fig-beliefNetNetwork. The deep core beliefs nodes are black, policy core belief nodes are gray, and secondary belief nodes are white. Additionally, positive partial correlations between nodes are a solid line and negative partial correlations are dashed lines. Finally, the network is weighted and the strength of the partial correlations are illustrated by the thickness of the edges, with thicker paths illustrating stronger correlations. 
 
 ```{r plot network for full sample}
 #| message: false
@@ -115,11 +221,11 @@ overall network, all years
 #| warning: false
 #| echo: false
 #| label: fig-beliefNetNetwork
-#| fig-cap: Belief System Network
+#| fig-cap: Nuclear Energy Belief System Network (Full Sample)
 
 groups <- factor(c(
-  rep("Deep Core", 2), 
-  rep("Policy Core", 1),
+  rep("Deep Core", 3), 
+  rep("Policy Core", 8),
   rep("Secondary", 1)
 ))
 
@@ -134,6 +240,7 @@ plot(beliefNetNetwork, layout = "spring", groups=groups, negDashed = T, legend =
 
 ```
 
+Overall, the network has 12 nodes and 58 (of 66 possible) non-zero edges, or connections. As shown in @fig-beliefNetNetwork, the deep core beliefs tend to cluster together with ideology (increasing conservatism) strongly negatively associated with environment orientation and both ideology and environment orientation weakly positively correlated with energy worry. For the policy core beliefs, the risks of nuclear energy are clustered together with strong positive correlations as are the benefits of nuclear energy. Additionally, the policy core beliefs are correlated with the secondary belief, with the risk measures negatively correlated with support for more plants and the benefit measures positively correlated.     
 
 ```{r centrality measures for full sample}
 #| echo: false
@@ -166,8 +273,8 @@ cent_stat <- net_boot_stat_cent %>%
   dplyr::select(type, id, mean, CIlower, CIupper)
 cent_stat$id
 
-labels2 <- c("CapTrade","EPA","GeoEng","IntAgree","Nuclear","Renew","Tax","egal","fatal","happening",
-             "hier","ideology","indiv","nepScale","partisan","risk","sciconsensus")
+labels2 <- c("energyWorry","envt_oren","ideology","morePlants","nben1","nben2","nben3","nben4","nrsk1","nrsk2","nrsk3",
+             "nrsk4")
 
 cent_stat$labels <- rep(labels2, 3)
 
@@ -223,68 +330,392 @@ betw_centO <- betw_cent %>% arrange(desc(mean))
 close_centO <- close_cent %>% arrange(desc(mean))
 str_centO <- str_cent %>% arrange(desc(mean))
 
-cent_stat$itemtype[cent_stat$node1=="hier" |
-                     cent_stat$node1=="egal" |
-                     cent_stat$node1=="indiv" |
-                     cent_stat$node1=="fatal" |
-                     cent_stat$node1=="ideology" |
-                     cent_stat$node1=="partisan" |
-                     cent_stat$node1=="nepScale"] <- "Deep\nCore"
-cent_stat$itemtype[cent_stat$node1=="happening" |
-                     cent_stat$node1=="risk" |
-                     cent_stat$node1=="sciconsensus"] <- "Policy\nCore"
-cent_stat$itemtype[cent_stat$node1=="CapTrade" |
-                     cent_stat$node1=="EPA" |
-                     cent_stat$node1=="GeoEng" |
-                     cent_stat$node1=="IntAgree" |
-                     cent_stat$node1=="Nuclear" |
-                     cent_stat$node1=="Renew" |
-                     cent_stat$node1=="Tax"] <- "Secondary"
+```
 
-cent_stat$measure <- factor(as.character(cent_stat$type), levels = c("betweenness", "closeness", "strength"))
-cent_stat$measure <- plyr::revalue(cent_stat$measure, c("betweenness" = "Betweenness",
-                                                        "closeness" = "Closeness",
-                                                        "strength" = "Strength"))
-cent_stat$itemtype <- factor(as.character(cent_stat$itemtype), levels = c("Secondary", "Policy\nCore", "Deep\nCore"))
+Next, we examine the centrality measures, including betweenness, closeness, and strength for the overall networks. As noted, we use a bootstrapping procedure with 1000 re-samples to generate the centrality estimates. The results are shown in @fig-cent.  
 
-centDP <- subset(cent_stat, itemtype=="Deep\nCore" | itemtype=="Policy\nCore")
-centPS <- subset(cent_stat, itemtype=="Policy\nCore" | itemtype=="Secondary")
-centDS <- subset(cent_stat, itemtype=="Deep\nCore" | itemtype=="Secondary")
 
-# differences are not significant
-btwDP.t <- t.test(mean ~ itemtype, data = subset(centDP, measure == "Betweenness"))
-btwPS.t <- t.test(mean ~ itemtype, data = subset(centPS, measure == "Betweenness"))
-btwDS.t <- t.test(mean ~ itemtype, data = subset(centDS, measure == "Betweenness"))
+![Measures of Network Centrality (Full Sample)](centralPlots.png){#fig-cent} 
 
-# functions for centrality by belief type plot
-ci <- function(x) (sd(x)/sqrt(length(x))*qt(0.975,df=length(x)-1) ) #function to compute size of confidence intervals
+Looking first to betweenness centrality, as shown in @fig-cent, _nrsk1_, risk of an accident at a nuclear power plant, is the node with the highest betweenness centrality with `r round(betw_centO$mean[1], 2)`. Next is support for more nuclear power plants at `r round(betw_centO$mean[2], 2)` followed by _nben2_, reliable electricity, at `r round(betw_centO$mean[3], 2)`. Nodes high in betweenness sit on the shortest path between the other nodes in the network and act as a bridge between other beliefs. Also shown in @fig-cent, support for more plants has the highest closeness centrality with `r round(close_centO$mean[1], 5)`, followed closely by _nrsk1_ at `r round(close_centO$mean[2], 5)`. Beliefs high in closeness are more closely connected to other nodes, so they have the shortest path to other nodes, which allows them to be influential in the network. Finally, looking to strength centrality, _nrsk1_ had the highest degree of strength centrality at `r round(str_centO$mean[1], 2)`, followed by _nrsk2_, a transportation accident, at `r round(str_centO$mean[2], 2)`. Strength centrality reflects the sum, using absolute values, of weighted connections. 
 
-data_summary <- function(x) {
-  m <- mean(x)
-  ymin <- m-ci(x)
-  ymax <- m+ci(x)
-  return(c(y=m,ymin=ymin,ymax=ymax))
-}
 
-centP <- ggplot(cent_stat, aes(x = factor(itemtype), y = mean)) +
-  geom_point(size = 2, position=position_jitter(width=.05,height=0), alpha = .5) +
-  facet_wrap(~measure, ncol = 3, scales = "free_y") +
-  stat_summary(fun.data=data_summary, geom = "crossbar", size = .5, width = .3, color = "black")+
-  ylab("Centrality")+
-  theme_minimal() +
-  theme(plot.title = element_text(face = "bold"),
-        plot.caption = element_text(face = "italic"),
-        axis.title.x=element_blank())
+## Pre-and-Post Fukushima Belief Network Comparison 
 
-ggsave("manuscript/centP.png", centP, width = 10, height = 4)
+In the next analysis, we compare the belief system network regarding nuclear energy before and after the Fukushima nuclear accident. As noted, policy learning would consist of changes in the belief system network such as shifts in the overall structure, density, and/or shifts in centrality of the nodes. First, we estimate and plot the belief system network pre-Fukushima, 2008-2011, and post-Fukushima, 2012-2023.^[Note that pre-Fukushima _n_-size is `r nrow(beliefDataPre)` and post-Fukushima _n_-size is `r nrow(beliefDataPost)`.] Next, we compare the means across policy core beliefs and secondary beliefs pre-and-post Fukushima. Then, we explore the various measures of centrality in the pre-and-post networks. Finally, we do a network comparison test between the pre-and-post Fukushima networks to see if there are differences in the structure or centrality between the two networks.    
+
+```{r estimate network for pre and post sample}
+#| echo: false
+#| warning: false
+
+# Pre Network
+beliefNetVars <- c("ideology","envt_oren","energyWorry",
+                   "nrsk1", "nrsk2", "nrsk3", "nrsk4", 
+                   "nben1", "nben2", "nben3", "nben4",
+                   "morePlants")
+beliefNetDataPre <- beliefDataPre[beliefNetVars]
+
+beliefNetNetworkPre <- estimateNetwork(beliefNetDataPre, 
+                                   default = "EBICglasso",
+                                   corMethod = "cor_auto",
+                                   tuning = 0.5)
+#beliefNetNetworkPre #for number of edges and connections
+
+# Post Network
+beliefNetVars <- c("ideology","envt_oren","energyWorry",
+                   "nrsk1", "nrsk2", "nrsk3", "nrsk4", 
+                   "nben1", "nben2", "nben3", "nben4",
+                   "morePlants")
+beliefNetDataPost <- beliefDataPost[beliefNetVars]
+
+beliefNetNetworkPost <- estimateNetwork(beliefNetDataPost, 
+                                   default = "EBICglasso",
+                                   corMethod = "cor_auto",
+                                   tuning = 0.5)
+#beliefNetNetworkPost #for number of edges and connections
+
+## network comparison 
+### https://reisrgabriel.com/blog/2021-10-01-nct/ 
+#set.seed(1287)
+#NCT_b <- NCT(beliefNetNetworkPre, beliefNetNetworkPost, it=1000, test.edges=TRUE)
+#summary(NCT_b)
+
+#NETWORK INVARIANCE TEST 
+# Test statistic M: 0.07017211 
+# p-value 0.004995005 
+
+# GLOBAL STRENGTH INVARIANCE TEST 
+# Global strength per group:  5.751335 5.646545 
+# Test statistic S:  0.1047899 
+# p-value 0.1148851
+
+#NCT_c = NCT(beliefNetNetworkPre, beliefNetNetworkPost, abs = FALSE, test.edges = TRUE,
+#test.centrality = TRUE, centrality = c("strength", "closeness", "betweenness"), nodes = "all", it=1000)
+#summary(NCT_c)
+
+# CENTRALITY INVARIANCE TEST 
+# Nodes tested: ideology envt_oren energyWorry nrsk1 nrsk2 nrsk3 nrsk4 nben1 nben2 nben3 nben4 morePlants 
+# Centralities tested: strength closeness betweenness
+# Test statistics C: 
+#                strength    closeness betweenness
+#ideology     0.004877490 0.0012507177           1
+#envt_oren    0.100578483 0.0015296769           4
+#energyWorry  0.008890695 0.0008184698           0
+#nrsk1        0.087938328 0.0018606203           3
+#nrsk2       -0.028515308 0.0014027643          -1
+#nrsk3        0.034910402 0.0016233658           2
+#nrsk4       -0.064105620 0.0009965805           0
+#nben1       -0.078740891 0.0011992603           0
+#nben2        0.075948371 0.0011157875          -4
+#nben3       -0.009817781 0.0013449629           1
+#nben4       -0.053699481 0.0011808495           0
+#morePlants   0.131315089 0.0020580875           0
+
+ #p-values: 
+ #              strength   closeness betweenness
+#ideology    0.915084915 0.001998002   0.6053946
+#envt_oren   0.012987013 0.000999001   0.1908092
+#energyWorry 0.772227772 0.066933067   1.0000000
+#nrsk1       0.002997003 0.000999001   0.4185814
+#nrsk2       0.357642358 0.000999001   0.8161838
+#nrsk3       0.219780220 0.000999001   0.3196803
+#nrsk4       0.066933067 0.000999001   1.0000000
+#nben1       0.016983017 0.000999001   1.0000000
+#nben2       0.053946054 0.001998002   0.3546454
+#nben3       0.784215784 0.000999001   0.6913087
+#nben4       0.107892108 0.000999001   1.0000000
+#morePlants  0.000999001 0.000999001   1.0000000
+```
+
+The pre-and-post networks are shown in @fig-beliefNetNetworkPrePost. As before, deep core beliefs nodes are black, policy core beliefs are gray, and secondary beliefs are white. Additionally, positive correlations are indicated by solid lines, negative correlations by dashed lines, and the stregth of the correlations are indicated by the thickness of the lines. 
+
+```{r plot network for pre and post sample}
+#| message: false
+#| warning: false
+#| echo: false
+#| label: fig-beliefNetNetworkPrePost
+#| layout-ncol: 2
+#| fig-cap: Nuclear Energy Belief System Network (Pre and Post Sample)
+#| fig-subcap: 
+#|   - "Pre-Fukushima"
+#|   - "Post-Fukushima"
+
+groups <- factor(c(
+  rep("Deep Core", 3), 
+  rep("Policy Core", 8),
+  rep("Secondary",1)
+))
+
+groups <- factor(as.character(groups), levels = c("Deep Core", "Policy Core", "Secondary"))
+
+plot(beliefNetNetworkPre, layout = "spring", groups=groups, negDashed = T, legend = F, label.cex = .8, label.scale = T, details = F, theme = "gray")
+
+plot(beliefNetNetworkPost, layout = "spring", groups=groups, negDashed = T, legend = F, label.cex = .8, label.scale = T, details = F, theme = "gray")
+
+# summary(beliefNetNetwork)
+# partial correlation matrix
+# beliefNetNetwork$results$optnet
+
 
 ```
 
+The pre-network has 12 edges and 54 non-zero connections, and the post-network has 12 nodes and 57 connections. 
+
+```{r diff of means}
+#| echo: false
+#| include: false
+#| warning: false
+
+mean(beliefDataPre$nrsk1, na.rm = TRUE)
+mean(beliefDataPost$nrsk1, na.rm = TRUE)
+t.test(beliefDataPre$nrsk1,beliefDataPost$nrsk1)
+
+mean(beliefDataPre$nrsk2, na.rm = TRUE)
+mean(beliefDataPost$nrsk2, na.rm = TRUE)
+t.test(beliefDataPre$nrsk2,beliefDataPost$nrsk2)
+
+mean(beliefDataPre$nrsk3, na.rm = TRUE)
+mean(beliefDataPost$nrsk3, na.rm = TRUE)
+t.test(beliefDataPre$nrsk3,beliefDataPost$nrsk3)
+
+mean(beliefDataPre$nrsk4, na.rm = TRUE)
+mean(beliefDataPost$nrsk4, na.rm = TRUE)
+t.test(beliefDataPre$nrsk4,beliefDataPost$nrsk4)
+
+mean(beliefDataPre$nben1, na.rm = TRUE)
+mean(beliefDataPost$nben1, na.rm = TRUE)
+t.test(beliefDataPre$nben1,beliefDataPost$nben1)
+
+mean(beliefDataPre$nben2, na.rm = TRUE)
+mean(beliefDataPost$nben2, na.rm = TRUE)
+t.test(beliefDataPre$nben2,beliefDataPost$nben2)
+
+mean(beliefDataPre$nben3, na.rm = TRUE)
+mean(beliefDataPost$nben3, na.rm = TRUE)
+t.test(beliefDataPre$nben3,beliefDataPost$nben3)
+
+mean(beliefDataPre$nben4, na.rm = TRUE)
+mean(beliefDataPost$nben4, na.rm = TRUE)
+t.test(beliefDataPre$nben4,beliefDataPost$nben4)
+
+mean(beliefDataPre$morePlants, na.rm = TRUE)
+mean(beliefDataPost$morePlants, na.rm = TRUE)
+t.test(beliefDataPre$morePlants,beliefDataPost$morePlants)
+```
+
+Next, we compare the means of the various policy core beliefs and secondary beliefs before and after Fukushima. The results are shown in @tbl-dims. 
+
+| | **Beliefs**        | **Pre-Fukushima Mean**  | **Post-Fukushima Mean**  | 
+| :----------- | :----------- | -------:| -----:| 
+| **Policy Core: Risks**         | Plant Accident<br> | `r round(mean(beliefDataPre$nrsk1, na.rm = TRUE),2)` | `r round(mean(beliefDataPost$nrsk1, na.rm = TRUE),2)`*** | 
+|                       | Transportation Accident<br> | `r round(mean(beliefDataPre$nrsk2, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$nrsk2, na.rm=TRUE),2)`*** |  
+|                       | Terrorist Attack<br> | `r round(mean(beliefDataPre$nrsk3, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$nrsk3, na.rm=TRUE),2)`+ | 
+|                       | Weapon<br> | `r round(mean(beliefDataPre$nrsk4, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$nrsk4, na.rm=TRUE),2)`*** | 
+| **Policy Core: Benefits**      | No GHG | `r round(mean(beliefDataPre$nben1, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$nben1, na.rm = TRUE),2)`*** | 
+|                       | Reliable Power<br> | `r round(mean(beliefDataPre$nben2, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$nben2, na.rm = TRUE),2)`*** | 
+|                        | Energy Independence<br> | `r round(mean(beliefDataPre$nben3, na.rm=TRUE),3)` | `r round(mean(beliefDataPost$nben3, na.rm = TRUE),2)`*** | 
+|                        | Reduced Environmental Damage<br> | `r round(mean(beliefDataPre$nben4, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$nben4, na.rm=TRUE),2)`*** |
+| **Secondary: More Plants** | Support for more nuclear plants |  `r round(mean(beliefDataPre$morePlants, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$morePlants, na.rm=TRUE),2)`*** |   
+
+: Comparison of Nuclear Energy Policy Core Beliefs and Policy Preference Pre-and-Post-Fukushima {#tbl-dims}
+
+As shown in @tbl-dims, all of the risk measures have a higher mean post-Fukushima at _p_<0.05, except for the terrorist attack measure at _p_<0.10. Along similar lines, all of the benefit measures have lower means post-Fukushima at _p_<0.05. Finally, support for more plants declines significantly post-Fukushima.  
+
+```{r centrality measures for pre and post sample}
+#| echo: false
+#| include: false
+#| warning: false
+
+#set.seed(1287) 
+#net_bootPre <- bootnet(beliefNetNetworkPre, nBoots = 1000,
+#                     default = "EBICglasso",
+#                     statistics = c("betweenness","closeness","strength","edge"),
+#                     type = "nonparametric", nCores = 1)
+
+#save(net_bootPre, file= paste0(getwd(),"/data/network_data_for_replicationPre.RData"))
+
+#set.seed(1287) 
+#net_bootPost <- bootnet(beliefNetNetworkPost, nBoots = 1000,
+#                     default = "EBICglasso",
+#                     statistics = c("betweenness","closeness","strength","edge"),
+#                     type = "nonparametric", nCores = 1)
+
+#save(net_bootPost, file= paste0(getwd(),"/data/network_data_for_replicationPost.RData"))
 
 
-pre and post Fukushima networks 
-  centrality measures 
-  network comparison? 
+load(paste0(getwd(),"/data/network_data_for_replicationPre.RData"))
+
+summary(net_bootPre)
+
+
+net_boot_wholePre <- net_bootPre$bootTable
+# net_boot_strength <- net_boot_whole %>%
+#  filter(type=="strength") %>%
+#  filter(id == c("US \nrisk","GW \nworry"))
+
+net_boot_statPre<-summary(net_bootPre)
+net_boot_stat_centPre <- net_boot_statPre %>%
+  filter(type!="edge")
+
+cent_statPre <- net_boot_stat_centPre %>%
+  dplyr::select(type, id, mean, CIlower, CIupper)
+cent_statPre$id
+
+labels2 <- c("energyWorry","envt_oren","ideology","morePlants","nben1","nben2","nben3","nben4","nrsk1","nrsk2","nrsk3","nrsk4")
+
+cent_statPre$labels <- rep(labels2, 3)
+
+str_centPre <- cent_statPre %>%
+  filter(type == "strength")
+
+str_centPpre <- ggplot(data = str_centPre, aes(x=reorder(labels, mean), y=mean)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin=(CIlower), ymax=(CIupper)), stat = "identity", position=position_dodge(0.1), width=.1) +
+  coord_flip() +
+  xlab("") +
+  ylab("") + 
+  ggtitle("Strength") +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = "dotted", alpha = .3) +
+  theme(plot.title = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic"))
+
+close_centPre<- cent_statPre %>%
+  filter(type == "closeness")
+
+close_centPpre <- ggplot(data = close_centPre, aes(x=reorder(labels, mean), y=mean)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin=(CIlower), ymax=(CIupper)), stat = "identity", position=position_dodge(0.1), width=.1) +
+  coord_flip() +
+  xlab("") +
+  ylab("") + 
+  ggtitle("Closeness") +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = "dotted", alpha = .3) +
+  theme(plot.title = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic"))
+
+betw_centPre <- cent_statPre %>%
+  filter(type == "betweenness")
+
+betw_centPpre <- ggplot(data = betw_centPre, aes(x=reorder(labels, mean), y=mean)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin=(CIlower), ymax=(CIupper)), stat = "identity", position=position_dodge(0.1), width=.1) +
+  coord_flip() +
+  xlab("Beliefs") +
+  ylab("") + 
+  ggtitle("Betweenness") +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = "dotted", alpha = .3) +
+  theme(plot.title = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic"))
+
+centralPlotsPre <- ggarrange(betw_centPpre, close_centPpre, str_centPpre, ncol=3, nrow=1)
+ggsave("manuscript/centralPlotsPre.png", centralPlotsPre, width = 10, height = 4)
+
+
+load(paste0(getwd(),"/data/network_data_for_replicationPost.RData"))
+
+summary(net_bootPost)
+
+
+net_boot_wholePost <- net_bootPost$bootTable
+# net_boot_strength <- net_boot_whole %>%
+#  filter(type=="strength") %>%
+#  filter(id == c("US \nrisk","GW \nworry"))
+
+net_boot_statPost<-summary(net_bootPost)
+net_boot_stat_centPost <- net_boot_statPost %>%
+  filter(type!="edge")
+
+cent_statPost <- net_boot_stat_centPost %>%
+  dplyr::select(type, id, mean, CIlower, CIupper)
+cent_statPost$id
+
+labels2 <- c("energyWorry","envt_oren","ideology", "morePlants", "nben1","nben2","nben3","nben4","nrsk1","nrsk2","nrsk3","nrsk4")
+
+cent_statPost$labels <- rep(labels2, 3)
+
+str_centPost <- cent_statPost %>%
+  filter(type == "strength")
+
+str_centPPost <- ggplot(data = str_centPost, aes(x=reorder(labels, mean), y=mean)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin=(CIlower), ymax=(CIupper)), stat = "identity", position=position_dodge(0.1), width=.1) +
+  coord_flip() +
+  xlab("") +
+  ylab("") + 
+  ggtitle("Strength") +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = "dotted", alpha = .3) +
+  theme(plot.title = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic"))
+
+close_centPost<- cent_statPost %>%
+  filter(type == "closeness")
+
+close_centPPost <- ggplot(data = close_centPost, aes(x=reorder(labels, mean), y=mean)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin=(CIlower), ymax=(CIupper)), stat = "identity", position=position_dodge(0.1), width=.1) +
+  coord_flip() +
+  xlab("") +
+  ylab("") + 
+  ggtitle("Closeness") +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = "dotted", alpha = .3) +
+  theme(plot.title = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic"))
+
+betw_centPost <- cent_statPost %>%
+  filter(type == "betweenness")
+
+betw_centPPost <- ggplot(data = betw_centPost, aes(x=reorder(labels, mean), y=mean)) + 
+  geom_point() +
+  geom_errorbar(aes(ymin=(CIlower), ymax=(CIupper)), stat = "identity", position=position_dodge(0.1), width=.1) +
+  coord_flip() +
+  xlab("Beliefs") +
+  ylab("") + 
+  ggtitle("Betweenness") +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = "dotted", alpha = .3) +
+  theme(plot.title = element_text(face = "bold"),
+        plot.caption = element_text(face = "italic"))
+
+centralPlotsPost <- ggarrange(betw_centPPost, close_centPPost, str_centPPost, ncol=3, nrow=1)
+ggsave("manuscript/centralPlotsPost.png", centralPlotsPost, width = 10, height = 4)
+
+betw_centOpre <- betw_centPre %>% arrange(desc(mean))
+close_centOpre <- close_centPre %>% arrange(desc(mean))
+str_centOpre <- str_centPre %>% arrange(desc(mean))
+
+betw_centO <- betw_centPost %>% arrange(desc(mean))
+close_centO <- close_centPost %>% arrange(desc(mean))
+str_centO <- str_centPost %>% arrange(desc(mean))
+```
+
+Next, we examine the betweenness, closeness, and strength centrality for both network, and the results are shown in @tbl-prePost. 
+
+
+::: {#fig-cc layout-nrow=2}
+
+![Pre-Fukushima](CentralPlotsPre.png){#fig-pre}
+
+![Post-Fukushima](CentralPlotsPost.png){#fig-post}
+
+Network Centrality Measures Pre-and-Post Fukushima {#tbl-prePost}
+:::
+
+Comparing betweenness centrality, as can be seen in @fig-pre, _nrsk1_ had the highest degree of betweenness centrality prior to Fukushima at `r round(betw_centOpre$mean[1], 2)`, followed closely by _morePlants_ at `r round(betw_centOpre$mean[2], 2)`. However, as can be seen in @fig-post, post-Fukushima _morePlants_ (`r round(betw_centOpost$mean[1], 2)`) had the highest betweenness centrality followed closely by _nrsk1_ at `r round(betw_centOpost$mean[2], 2)`. The ordering of the various measures of betweenness centrality were similiar pre-and-post Fukushima with the exception of _energyWorry_ and _nrsk4_, the diversion of nuclear technology to a weapon.   
+
+For closeness centrality ...
+
+Finally, for strength centrality 
+
+Looking first to betweenness centrality, as shown in @fig-cent, _nrsk1_, risk of an accident at a nuclear power plant, is the node with the highest betweenness centrality with `r round(betw_centO$mean[1], 2)`. Next is support for more nuclear power plants at `r round(betw_centO$mean[2], 2)` followed by _nben2_, reliable electricity, at `r round(betw_centO$mean[3], 2)`. Nodes high in betweenness sit on the shortest path between the other nodes in the network and act as a bridge between other beliefs. Also shown in @fig-cent, support for more plants has the highest closeness centrality with `r round(close_centO$mean[1], 5)`, followed closely by _nrsk1_ at `r round(close_centO$mean[2], 5)`. Beliefs high in closeness are more closely connected to other nodes, so they have the shortest path to other nodes, which allows them to be influential in the network. Finally, looking to strength centrality, _nrsk1_ had the highest degree of strength centrality at `r round(str_centO$mean[1], 2)`, followed by _nrsk2_, a transportation accident, at `r round(str_centO$mean[2], 2)`. Strength centrality reflects the sum, using absolute values, of weighted connections. 
+
+To compare the networks, we use the `NetworkComparisonTest` package in `R`. 
+ 
+
 
 # Discussion and Conclusion 
 
