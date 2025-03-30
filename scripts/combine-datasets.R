@@ -17,7 +17,7 @@ ee12 <- read.csv("data/eeData/EE12_Web_wtd.csv")
 ee13 <- read.csv("data/eeData/EE13_Web_wtd.csv")
 ee14 <- read.csv("data/eeData/EE14_data_wtd.csv")
 ee15 <- read.csv("data/eeData/EE15_data_wtd.csv")
-ee16 <- read.csv("data/eeData/EE16_data_wtd.csv")
+# ee16 <- read.csv("data/eeData/EE16_data_wtd.csv")
 # ee17 <- read.csv("data/eeData/EE17_data_wtd.csv")
 ee18 <- read.csv("data/eeData/EE18_data_wtd.csv")
 ee19 <- read.csv("data/eeData/EE19_data_wtd.csv")
@@ -36,7 +36,7 @@ age <- c(ee08$e2_age,
          ee13$E1_age,
          ee14$e1_age,
          ee15$e1_age,
-         ee16$e1_age,
+#         ee16$e1_age,
 #         ee17$age,
          ee18$age,
          ee19$age,
@@ -53,7 +53,7 @@ gender <- c(ee08$e3_gend,
             ee13$E3_gend,
             ee14$e3_gend,
             ee15$e3_gend,
-            ee16$e3_gend,
+#            ee16$e3_gend,
 #            ee17$gend,
             ee18$gend,
             ee19$gend,
@@ -70,7 +70,7 @@ race <- c(ee08$e125b_race_rec_wt,
           ee13$E92b_race_rec,
           ee14$e5b_race_rec,
           ee15$race_recode,
-          ee16$e5_race,
+#          ee16$e5_race,
 #          ee17$race,
           ee18$race,
           ee19$race,
@@ -89,7 +89,7 @@ ee12$e2b_edu_rec7 <- ifelse(ee12$e2b_edu_rec7>=4,1,0)
 ee13$E2a_edu_rec <- ifelse(ee13$E2a_edu_rec>=4,1,0)
 ee14$e2b_edu_rec <- ifelse(ee14$e2b_edu_rec>=4,1,0)
 ee15$e2b_edu_rec <- ifelse(ee15$e2b_edu_rec>=4,1,0)
-ee16$e2_edu <- ifelse(ee16$e2_edu>=6,1,0)
+#ee16$e2_edu <- ifelse(ee16$e2_edu>=6,1,0)
 #ee17$edu <- ifelse(ee17$edu>=6,1,0)
 ee18$edu <- ifelse(ee18$edu>=6,1,0)
 ee19$edu <- ifelse(ee19$edu>=6,1,0)
@@ -106,7 +106,7 @@ college <- c(ee08$e1b_edu_rec,
              ee13$E2a_edu_rec, 
              ee14$e2b_edu_rec, 
              ee15$e2b_edu_rec, 
-             ee16$e2_edu, 
+#             ee16$e2_edu, 
 #             ee17$edu, 
              ee18$edu,
              ee19$edu, 
@@ -125,7 +125,7 @@ energyWorry <- c(ee08$e6_worry3,
                  ee13$E10_worry3,
                  ee14$e11_worry3,
                  ee15$e11_worry3,
-                 ee16$e10_worry2,
+#                 ee16$e10_worry2,
 #                 ee17$worry_enrgy_a,
                  ee18$worry_enrgy,
                  ee19$worry_enrgy,
@@ -143,7 +143,7 @@ nature <- c(ee08$e11_nature,
             ee13$E15_nature,
             ee14$e14_nature,
             ee15$e12_nature,
-            ee16$e12_nature,
+#            ee16$e12_nature,
 #            ee17$nature,
             ee18$nature,
             ee19$nature,
@@ -160,7 +160,7 @@ environ <- c(ee08$e84_environ,
              ee13$E82_environ,
              ee14$e90_environ,
              ee15$e83_environ,
-             ee16$e96_environ,
+#             ee16$e96_environ,
 #             ee17$environ,
              ee18$environ,
              ee19$environ,
@@ -174,9 +174,7 @@ envt_oren <- round((nature+environ)/2,0)
 ee18$nrsk1 <- ee18$nrsk1_a
 ee18$nrsk1[!is.na(ee18$nrsk1_b)] = ee18$nrsk1_b[!is.na(ee18$nrsk1_b)]
 
-nrsk1 <- c(ee06$P44_nrsk1,
-           ee07$w63_nrsk1,
-           ee08$e67_nrsk1,
+nrsk1 <- c(ee08$e67_nrsk1,
            ee09$E67_nrsk1,
            ee10$e58_nrsk1,
            ee11$E43_nrsk1,
@@ -191,14 +189,12 @@ nrsk1 <- c(ee06$P44_nrsk1,
            ee20$nrsk1,
            ee21$nrsk1,
            ee22$nrsk1,
-           ee23$nrsk1) #ee18 include both old and new scales - need to average 
+           ee23$nrsk1) 
 
 ee18$nrsk2 <- ee18$nrsk2_a
 ee18$nrsk2[!is.na(ee18$nrsk2_b)] = ee18$nrsk2_b[!is.na(ee18$nrsk2_b)]
 
-nrsk2 <- c(ee06$P45_nrsk2,
-           ee07$w64_nrsk2,
-           ee08$e68_nrsk2,
+nrsk2 <- c(ee08$e68_nrsk2,
            ee09$E68_nrsk2,
            ee10$e59_nrsk2,
            ee11$E44_nrsk2,
@@ -211,14 +207,12 @@ nrsk2 <- c(ee06$P45_nrsk2,
            ee20$nrsk2,
            ee21$nrsk2,
            ee22$nrsk2,
-           ee23$nrsk2) # ee16 and 17 split question - need to combine
+           ee23$nrsk2) 
 
 ee18$nrsk3 <- ee18$nrsk3_a
 ee18$nrsk3[!is.na(ee18$nrsk3_b)] = ee18$nrsk1_b[!is.na(ee18$nrsk3_b)]
 
-nrsk3 <- c(ee06$P46_nrsk3,
-           ee07$w65_nrsk3,
-           ee08$e69_nrsk3,
+nrsk3 <- c(ee08$e69_nrsk3,
            ee09$E69_nrsk3,
            ee10$e60_nrsk3,
            ee11$E45_nrsk3,
@@ -238,9 +232,7 @@ nrsk3 <- c(ee06$P46_nrsk3,
 ee18$nrsk4 <- ee18$nrsk4_a
 ee18$nrsk4[!is.na(ee18$nrsk4_b)] = ee18$nrsk4_b[!is.na(ee18$nrsk4_b)]
 
-nrsk4 <- c(ee06$P47_nrsk4,
-           ee07$w66_nrsk4,
-           ee08$e70_nrsk4,
+nrsk4 <- c(ee08$e70_nrsk4,
            ee09$E70_nrsk4,
            ee10$e61_nrsk4,
            ee11$E46_nrsk4,
@@ -257,9 +249,7 @@ nrsk4 <- c(ee06$P47_nrsk4,
            ee22$nrsk4,
            ee23$nrsk4)
 
-nben1 <- c(ee06$P48_nben1,
-           ee07$w67_nben1,
-           ee08$e71_nben1,
+nben1 <- c(ee08$e71_nben1,
            ee09$E71_nben1,
            ee10$e62_nben1,
            ee11$E47_nben1,
@@ -276,9 +266,7 @@ nben1 <- c(ee06$P48_nben1,
            ee22$nben1,
            ee23$nben1)
 
-nben2 <- c(ee06$P49_nben2,
-           ee07$w68_nben2,
-           ee08$e72_nben2,
+nben2 <- c(ee08$e72_nben2,
            ee09$E72_nben2,
            ee10$e63_nben2,
            ee11$E48_nben2,
@@ -295,9 +283,7 @@ nben2 <- c(ee06$P49_nben2,
            ee22$nben2,
            ee23$nben2)
 
-nben3 <- c(ee06$P50_nben3,
-           ee07$w69_nben3,
-           ee08$e73_nben3,
+nben3 <- c(ee08$e73_nben3,
            ee09$E73_nben3,
            ee10$e64_nben3,
            ee11$E49_nben3,
@@ -314,9 +300,7 @@ nben3 <- c(ee06$P50_nben3,
            ee22$nben3,
            ee23$nben3)
 
-nben4 <- c(ee06$P51_nben4,
-           ee07$w70_nben4,
-           ee08$e74_nben4,
+nben4 <- c(ee08$e74_nben4,
            ee09$E74_nben4,
            ee10$e65_nben4,
            ee11$E50_nben4,
@@ -341,7 +325,7 @@ rskben <- c(ee08$e75_rskben,
             ee13$E36_rskben,
             ee14$e29_rskben,
             ee15$e27_rskben,
-            ee16$e27_rskben,
+#            ee16$e27_rskben,
 #            ee17$rskben,
             ee18$rskben,
             ee19$rskben,
@@ -349,11 +333,6 @@ rskben <- c(ee08$e75_rskben,
             ee21$rskben,
             ee22$rskben,
             ee23$rskben)
-
-ee17$new_reac <- ee17$new_reac_a
-ee17$new_reac[!is.na(ee17$new_reac_b)] = ee17$new_reac_b[!is.na(ee17$new_reac_b)]
-
-names(ee17)
 
 plantSite <- c(ee08$e76_new1,
                ee09$E76_new1,
@@ -363,7 +342,7 @@ plantSite <- c(ee08$e76_new1,
                ee13$E37_new1,
                ee14$e30_new1,
                ee15$e28G_new1,
-               ee16$e28_new1,
+#               ee16$e28_new1,
 #               ee17$new_reac,
                ee18$new_reac,
                ee19$new_reac,
@@ -380,7 +359,7 @@ plantNew <- c(ee08$e77_new2,
               ee14$e31_new2,
               ee13$E38_new2,
               ee15$e29G_new2,
-              ee16$e29_new2,
+#              ee16$e29_new2,
               ee18$new_npp,
               ee19$new_npp,
               ee20$new_npp,
@@ -399,7 +378,7 @@ party <- c(ee08$e122_party,
            ee13$E88_party,
            ee14$e97_party,
            ee15$e90_party,
-           ee16$e103_party,
+#          ee16$e103_party,
 #          ee17$party,
            ee18$party,
            ee19$party,
@@ -419,7 +398,7 @@ ideology <- c(ee08$e124_ideol,
               ee13$E90_ideol,
               ee14$e99_ideol,
               ee15$e92_ideol,
-              ee16$e105_ideol,
+#              ee16$e105_ideol,
 #              ee17$ideol,
               ee18$ideol,
               ee19$ideol,
@@ -440,7 +419,7 @@ ee12$year <- c(2012)
 ee13$year <- c(2013)
 ee14$year <- c(2014)
 ee15$year <- c(2015)
-ee16$year <- c(2016)
+#ee16$year <- c(2016)
 #ee17$year <- c(2017)
 ee18$year <- c(2018)
 ee19$year <- c(2019)
@@ -457,7 +436,7 @@ year <- c(ee08$year,
           ee13$year,
           ee14$year,
           ee15$year,
-          ee16$year,
+#          ee16$year,
 #          ee17$year,
           ee18$year,
           ee19$year,
@@ -470,7 +449,7 @@ fuk <- ifelse(year==2012 |
                 year==2013 |
                 year==2014 |  
                 year==2015 |
-                year==2016 |
+#                year==2016 |
 #                year==2017 |
                 year==2018 |
                 year==2019 |
@@ -481,6 +460,8 @@ fuk <- ifelse(year==2012 |
 
 ## make data set 
 nukeData <- data.frame(age, gender, white, nature, environ, envt_oren,
-                       rskben, plantSite, plantNew, morePlants, college, 
-                       ideology, democrat, republican, con, liberal, year, fuk)
+                       nrsk1, nrsk2, nrsk3, nrsk4, nben1, nben2, nben3,
+                       nben4, rskben, plantSite, plantNew, morePlants, 
+                       college, ideology, democrat, republican, con, 
+                       liberal, year, fuk, energyWorry)
 write.csv(nukeData, "data/nukeData.csv")
