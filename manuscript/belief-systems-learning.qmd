@@ -23,9 +23,9 @@ format:
     reference-doc: /Users/nowlinmc/Dropbox/Projects/Manuscript-Files/reference.docx 
 ---
 
-**Abstract**: The Advocacy Coalition Framework centers belief systems, coalitions, and policy-oriented learning in its explanations of policy development. According to the ACF, belief systems are hierarchically tiered across three different types of beliefs, ranging from abstract and applicable to multiple policy subsystems to specific and relevant to particular policy instruments. Deep core beliefs are the most abstract, and they inform policy core beliefs that, in turn, inform secondary beliefs about specific policy approaches. Recent work has examined belief systems as networks, where beliefs are nodes and the correlations between beliefs are the edges. In a belief system network, the types of beliefs -- deep core, policy core, and secondary beliefs -- occupy various places in the network and perform various functions. For example, deep core beliefs may be high in betweenness centrality in the network, thereby providing a gatekeeping function for other beliefs, whereas secondary beliefs may be high in strength centrality, indicating that they are connected to the other types of beliefs. Within the ACF, policy-orientated learning is associated with change or reinforcement of beliefs; however, no work has examined policy learning in the context of belief system networks. In this paper, we pool several years (2006-2023) of public opinion data about nuclear energy to examine learning as changes in the configuration of belief system networks over time. Specifically, we develop a belief system network of nuclear energy that includes deep core beliefs (political ideology, environmental orientation, and concern about energy cost and availability), policy core beliefs (risks and benefits of nuclear energy), and secondary aspects (support for constructing more nuclear power plants). Then, we use network comparison tests to explore learning (i.e., changes in the network structure over time) in response to the Fukushima nuclear accident, a significant exogenous shock that likely altered the belief system network of nuclear energy.
+**Abstract**: The Advocacy Coalition Framework centers belief systems, coalitions, and policy-oriented learning in its explanations of policy development. According to the ACF, belief systems are hierarchically tiered across three different types of beliefs, ranging from abstract and applicable to multiple policy subsystems to specific and relevant to particular policy instruments. Deep core beliefs are the most abstract, and they inform policy core beliefs that, in turn, inform secondary beliefs about specific policy approaches. Recent work has examined belief systems as networks, where beliefs are nodes and the correlations between beliefs are the edges. In a belief system network, the types of beliefs -- deep core, policy core, and secondary beliefs -- occupy various places in the network and perform various functions. For example, deep core beliefs may be high in betweenness centrality in the network, thereby providing a gatekeeping function for other beliefs, whereas secondary beliefs may be high in strength centrality, indicating that they are most frequently connected to the other types of beliefs. Within the ACF, policy-orientated learning is associated with change or reinforcement of beliefs; however, no work has examined policy learning in the context of belief system networks. In this paper, we pool several years (2006-2023) of public opinion data about nuclear energy to examine learning as changes in the configuration of belief system networks over time. Specifically, we develop a belief system network of nuclear energy that includes deep core beliefs (political ideology, environmental orientation, and concern about energy cost and availability), policy core beliefs (risks and benefits of nuclear energy), and secondary aspects (support for constructing more nuclear power plants). Then, we use network comparison tests to explore learning (i.e., changes in the network structure over time) in response to the Fukushima nuclear accident, a significant exogenous shock that likely altered the belief system network of nuclear energy.
 
-_Paper prepared for presentation at the Annual Meeting of the Midwest Political Science Association, April 2025_ 
+_Paper prepared for the Annual Meeting of the Midwest Political Science Association, April 2025_ 
 
 ```{r setup}
 #| include: false
@@ -80,9 +80,11 @@ beliefData$nben2 <- beliefData$nben2+1
 beliefData$nben3 <- beliefData$nben3+1
 beliefData$nben4 <- beliefData$nben4+1
 beliefData$energyWorry <- beliefData$energyWorry+1
+
+today <- format(Sys.Date(), "%m-%d-%Y")
 ```
 
-
+**This version**: `r today`
 
 # Introduction 
 
@@ -92,7 +94,7 @@ Belief systems within the ACF are hierarchical, with three types of beliefs wher
 
 As noted, within the ACF belief systems are understood as hierarchically structured. However, recent work has argued that belief systems can be understood as networks [@boutylineBeliefNetworkAnalysis2017; @brandtWhatCentralPolitical2019; @keskinturkOrganizationPoliticalBelief2022; @turner-zwinkelsBeliefSystemNetworks2022], including within the ACF [@nowlinBeliefSystemsNetworks2025]. A network approach to belief systems sees the beliefs as the nodes in the network and the connections between the nodes as the edges. Like other types of networks, the edges between the nodes create a system of interconnections, and within that system, some nodes are more central or influential than others. 
 
-In this paper, we combine an understanding of belief systems as networks with policy-oriented learning. Specifically, we posit that policy-oriented learning involves changes in the structure of the belief system network. Such structure changes include the connections between the beliefs, the overall connectivity of the network, and the shifting centrality of various beliefs. We test this supposition using several years' worth of survey data of the US public regarding nuclear energy. The data was collected between 2008 and 2023, which allows us to examine the impact of the 2011 Fukushima nuclear accident on beliefs about the risks and benefits of nuclear energy and support for constructing new nuclear power plants in the US. 
+In this paper, we combine an understanding of belief systems as networks with policy-oriented learning. Specifically, we posit that policy-oriented learning involves changes in the structure of the belief system network. Such structural changes include the connections between the beliefs, the overall connectivity of the network, and the shifting centrality of various beliefs. We test this supposition using several years' worth of survey data of the US public views on nuclear energy. The data was collected between 2008 and 2023, which allows us to examine the impact of the 2011 Fukushima nuclear accident on beliefs about the risks and benefits of nuclear energy and support for constructing new nuclear power plants in the US. 
 
 # Belief System Networks 
 
@@ -100,7 +102,7 @@ Traditionally, within the ACF, belief systems are seen as hierarchical, with cle
 
 A belief system network approach to belief systems in the ACF doesn't rely on the type of belief and its position in the hierarchy to determine its influence; rather, it emphasizes its position in the network of beliefs. While the type of belief (deep core, policy core, secondary) remains important, a network approach uses the position of the belief in the network to examine the prominence of the belief. Specifically, the prominence of a belief within a belief system is measured by its centrality within the network.  
  
-Centrality measures the prominence of the various nodes in the network, with nodes with higher degrees of centrality considered the most prominent and influential. The most used measures of centrality include degree, betweenness, and closeness, and each measure of centrality emphasizes a different aspect of the prominence of the nodes in the network [@lukeUserGuideNetwork2015]. Degree centrality is the number of connections a node has with other nodes in the network. The more connections a node has, the more prominent it is in the network. Related to degree centrality is strength centrality. Strength centrality is used in weighted networks, including belief system networks, and i the sum of the edge weights. Betweenness centrality is a measure of how often the node sits on the path between other nodes. Nodes high in betweenness are understood to be prominent because they likely act as gatekeepers of information between nodes. Finally, closeness centrality is where the prominence of a node is a function of how close that node is to other nodes in the network.
+Centrality measures the prominence of the various nodes in the network, with nodes with higher degrees of centrality considered the most prominent and influential. The most used measures of centrality include degree, betweenness, and closeness, and each measure of centrality emphasizes a different aspect of the prominence of the nodes in the network [@lukeUserGuideNetwork2015]. Degree centrality is the number of connections a node has with other nodes in the network. The more connections a node has, the more prominent it is in the network. Related to degree centrality is strength centrality. Strength centrality is used in weighted networks, including belief system networks, and is the sum of the edge weights. This means that nodes with high strength centrality are well connected and interact strongly with other nodes. Betweenness centrality is a measure of how often the node sits on the path between other nodes. Nodes high in betweenness are understood to be prominent because they likely act as gatekeepers of information between nodes. Finally, closeness centrality is where the prominence of a node is a function of how close that node is to other nodes in the network. Unlike degree centrality, which only measures direct connections, closeness centrality accounts for indirect connections within the overall network structure. Nodes with high closeness centrality are likely more central in the network and can reach other nodes more quickly. 
 
 Several studies have illustrated the usefulness of conceptualizing belief systems as networks, and many have found that deep core and policy core beliefs play a central role in belief system networks. For example, using the American National Election Study (ANES), @boutylineBeliefNetworkAnalysis2017 found that self-reported political ideology, a deep core belief, occupies a central role in a network of other beliefs about various policy issues (e.g., abortion, environment, guns, death penalty, immigration, inequality, welfare spending). Additionally, using common measures of network centrality, including strength, closeness, and betweenness, @brandtWhatCentralPolitical2019 find that political ideology and partisanship are more central within belief system networks than operational (issues-based) beliefs. Exploring the issue of climate change, @leeClimateChangeBelief2024 found that concern about climate change, a policy core belief, was the belief most central in the belief system network. Finally, examining the climate change belief system network of the mass public, @nowlinBeliefSystemsNetworks2025 found that egalitarianism, a deep core belief, had the highest degree of betweenness and closeness centrality, and support for EPA regulations had the highest strength centrality. 
 
@@ -115,7 +117,7 @@ In the following analysis, we estimate the overall nuclear energy belief system 
 
 # Data and Measures 
 
-To estimate the nuclear energy belief system network, we draw on public opinion data collected annually between 2008 and 2023 from nationwide surveys of US residents.^[However, 2016 and 2017 are not included because of question wording changes.] In each survey, respondents were asked about their views on energy and environmental issues, including nuclear energy. The surveys were developed and administered by the Institute for Public Policy Research and Analysis at the University of Oklahoma. The samples for each survey were recruited by firms including Survey Sampling International and Qualtrics, and quotas were used to ensure that the samples were representative of the US population. Overall, the combined surveys include `r nrow(beliefData)` respondents, with missing data removed. In the next section, we discuss the various survey measures used for deep core beliefs, policy core beliefs, and secondary beliefs associated with nuclear energy. 
+To estimate the nuclear energy belief system network, we draw on public opinion data collected annually between 2008 and 2023 from nationwide surveys of US residents.^[However, 2016 and 2017 are not included because of question wording changes.] In each survey, respondents were asked about their views on energy and environmental issues, including nuclear energy. The surveys were developed and administered by the Institute for Public Policy Research and Analysis at the University of Oklahoma. The samples for each survey were recruited by firms including Survey Sampling International and Qualtrics, and quotas were used to ensure that the samples were representative of the US population. Where needed, post-stratified weights were used to correct small discrepancies in sample representativeness. Overall, the combined surveys include `r nrow(beliefData)` respondents, with missing data removed. In the next section, we discuss the various survey measures used for deep core beliefs, policy core beliefs, and secondary beliefs associated with nuclear energy. 
 
 ## Beliefs 
 
@@ -146,37 +148,36 @@ Policy core beliefs are associated with beliefs about particular policy issues a
 
 Respondents were asked to rate, on a zero to ten scale, their perceived risks of nuclear energy across four components of risk, including an accident at a nuclear power plant, an accident during transportation or storage of nuclear materials, a terrorist attack on a nuclear plant, and diversion of fuel to make a nuclear weapon. The exact question wording was as follows:  
 
-> First we want to know about your beliefs concerning some of the possible risks associated with nuclear energy use in the U.S. Please consider both the likelihood of a nuclear event occurring and its potential consequences when evaluating the risk posed by each of the following on a scale from zero to ten, where zero means no risk and ten means extreme risk. [_Statements were presented in random order_]
+> _First we want to know about your beliefs concerning some of the possible risks associated with nuclear energy use in the U.S. Please consider both the likelihood of a nuclear event occurring and its potential consequences when evaluating the risk posed by each of the following on a scale from zero to ten, where zero means no risk and ten means extreme risk._ [_Statements were presented in random order_]
 
-* **nrsk1 (Plant Accident)**: An event at a U.S. nuclear power plant within the next 20 years that results in the release of large amounts of radiation
+* **nrsk1 (Plant Accident)**: _An event at a U.S. nuclear power plant within the next 20 years that results in the release of large amounts of radiation_
 
-* **nrsk2 (Transportation Accident)**: An event during the transportation and temporary storage of spent nuclear fuel from nuclear power plants in the U.S. within the next 20 years that results in the release of large amounts of radiation 
+* **nrsk2 (Transportation Accident)**: _An event during the transportation and temporary storage of spent nuclear fuel from nuclear power plants in the U.S. within the next 20 years that results in the release of large amounts of radiation_ 
+* **nrsk3 (Terrorist Attack)**: _A terrorist attack at a U.S. nuclear power plant within the next 20 years that results in the release of large amounts of radiation_
 
-* **nrsk3 (Terrorist Attack)**: A terrorist attack at a U.S. nuclear power plant within the next 20 years that results in the release of large amounts of radiation
-
-* **nrsk4 (Weapon)**: The diversion of nuclear fuel from a nuclear power plant in the U.S. within the next 20 years for the purpose of building a nuclear weapon
+* **nrsk4 (Weapon)**: _The diversion of nuclear fuel from a nuclear power plant in the U.S. within the next 20 years for the purpose of building a nuclear weapon_
 
 Similarly, respondents were asked about the benefits of nuclear energy across four aspects: no greenhouse gases, a source of reliable power, contributions to US energy independence, and reduced damage to the environment compared to coal or oil and gas extraction. The questions included: 
 
-> Next we want to know about your beliefs concerning some of the possible benefits associated with nuclear energy use in the U.S. Please evaluate each of these possible benefits of nuclear energy use on a scale from zero to ten, where zero means not at all beneficial and ten means extremely beneficial. [_Statements were presented in random order_]  
+> _Next we want to know about your beliefs concerning some of the possible benefits associated with nuclear energy use in the U.S. Please evaluate each of these possible benefits of nuclear energy use on a scale from zero to ten, where zero means not at all beneficial and ten means extremely beneficial._ [_Statements were presented in random order_]  
 
-* **nben1 (No GHG)**: Reducing environmental threats because the generation of nuclear energy does not produce greenhouse gases that are believed to cause climate change 
+* **nben1 (No GHG)**: _Reducing environmental threats because the generation of nuclear energy does not produce greenhouse gases that are believed to cause climate change_ 
 
-* **nben2 (Reliable Power)**: Reliable power because nuclear energy generates large amounts of electricity and is not affected by weather conditions, such as low rainfall or no wind
+* **nben2 (Reliable Power)**: _Reliable power because nuclear energy generates large amounts of electricity and is not affected by weather conditions, such as low rainfall or no wind_
 
-* **nben3 (Energy Independence)**: Greater U.S. energy independence because nuclear energy production does not require oil or gas from foreign sources
+* **nben3 (Energy Independence)**: _Greater U.S. energy independence because nuclear energy production does not require oil or gas from foreign sources_
 
-* **nben4 (Reduced Environmental Damage)**: Reduced environmental damage because of less need for mining coal or extracting oil and gas 
+* **nben4 (Reduced Environmental Damage)**: _Reduced environmental damage because of less need for mining coal or extracting oil and gas_ 
 
 ### Secondary Beliefs 
 
-Secondary beliefs are the narrowest and most specific beliefs and concern particular coalition strategies and/or policy instruments to achieve policy goals [@nohrstedtAdvocacyCoalitionFramework2023]. Secondary beliefs also inform specific policy preferences [@moysonCognitionPolicyChange2017; @plumerWhenDoesPolicy2024]. To measure secondary beliefs, we use a measure of support for building more nuclear power plants in the US. Specifically, we averaged responses on two questions, with one question regarding support for adding additional nuclear reactors at existing nuclear power plants and adding new reactors at new locations in the US.^[We do not have a measure of secondary beliefs, rather we assume that secondary beliefs are implied by policy preferences, which is support for more nuclear power plants.] 
+Secondary beliefs are the narrowest and most specific beliefs and concern particular coalition strategies and/or policy instruments to achieve policy goals [@nohrstedtAdvocacyCoalitionFramework2023]. Secondary beliefs also inform specific policy preferences [@moysonCognitionPolicyChange2017; @plumerWhenDoesPolicy2024]. To measure secondary beliefs, we use a measure of support for building more nuclear power plants in the US. Specifically, we averaged responses on two questions, one question regarding support for adding additional nuclear reactors at existing nuclear power plants and another about adding new reactors at new locations in the US.^[We do not have a measure of secondary beliefs, rather we assume that secondary beliefs are implied by policy preferences, which is support for more nuclear power plants.] 
 
-> Using a scale from one to seven, where one means _strongly oppose_ and seven means _strongly support_, how do you feel about constructing additional nuclear reactors at the sites of existing nuclear power plants in the U.S.?
+> _Using a scale from one to seven, where one means strongly oppose and seven means strongly support, how do you feel about constructing additional nuclear reactors at the sites of existing nuclear power plants in the U.S.?_
 
-> Using the same scale from one to seven, where one means _strongly oppose_ and seven means _strongly support_, how do you feel about constructing additional nuclear power plants at new locations in the U.S.?
+> _Using the same scale from one to seven, where one means strongly oppose and seven means strongly support, how do you feel about constructing additional nuclear power plants at new locations in the U.S.?_
 
-For analysis, we combine and average the two scales into a single one to seven measure of support for more nuclear energy plants. The average support for more nuclear plants is `r round(mean(beliefData$morePlants, na.rm = TRUE),3)`. 
+For analysis, we combine and average the two scales into a single one to seven measure of support for constructing more nuclear energy plants. The average support for more nuclear plants is `r round(mean(beliefData$morePlants, na.rm = TRUE),3)`. 
 
 
 ## Analysis 
@@ -234,7 +235,7 @@ plot(beliefNetNetwork, layout = "spring", groups=groups, negDashed = T, legend =
 
 ```
 
-The network with the full sample has 12 nodes and 58 (of 66 possible) non-zero edges or connections. As shown in @fig-beliefNetNetwork, deep core beliefs tend to cluster together with ideology (increasing conservatism) strongly and negatively associated with environment orientation. Both ideology and environment orientation are weakly and positively correlated with energy worry. For the policy core beliefs, the risks of nuclear energy are clustered together with strong positive correlations, as are the benefits of nuclear energy. Additionally, the policy core beliefs are correlated with the secondary belief, with the risk measures negatively correlated with support for more plants and the benefit measures positively correlated.     
+The network with the full sample has 12 nodes and 58 (of 66 possible) non-zero edges or connections. As shown in @fig-beliefNetNetwork, deep core beliefs tend to cluster together with ideology (increasing conservatism) strongly and negatively associated with environmental orientation. Both ideology and environmental orientation have a weak positive correlation with energy worry. For the policy core beliefs, the risks of nuclear energy are clustered together with strong positive correlations, as are the benefits of nuclear energy. Additionally, the policy core beliefs are correlated with the secondary belief, with the risk measures negatively correlated with support for more plants and the benefit measures positively correlated.     
 
 ```{r centrality measures for full sample}
 #| echo: false
@@ -503,6 +504,7 @@ beliefNetNetworkPost <- estimateNetwork(beliefNetDataPost,
 #nben4       0.107892108 0.000999001   1.0000000
 #morePlants  0.000999001 0.000999001   1.0000000
 ```
+
 
 The pre-and-post networks are shown in @fig-beliefNetNetworkPrePost. As before, deep core beliefs nodes are black, policy core beliefs are gray, and secondary beliefs are white. Additionally, positive correlations are indicated by solid lines, negative correlations by dashed lines, and the strength of the correlations is indicated by the thickness of the lines. 
 
