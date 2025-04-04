@@ -1,0 +1,449 @@
+---
+title: "Belief System Networks and Policy Learning"
+author: 
+- Matthew C. Nowlin, College of Charleston 
+- Kuhika Gupta, University of Oklahoma 
+- Hank Jenkins-Smith, University of Oklahoma
+date: "Midwest Political Science Association, April 2025"
+bibliography: /Users/nowlinmc/Dropbox/refs.bib
+csl: /Users/nowlinmc/Dropbox/Projects/Manuscript-Files/csl/american-political-science-association.csl
+format:
+  pptx:
+    reference-doc: cofc-template.pptx
+    slide-level: 2
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_knit$set(root.dir = normalizePath(".."))
+```
+
+```{r}
+#| echo: false
+#| include: false
+#| warning: false
+
+## packages 
+library("tidyverse")
+library("bootnet")
+library("qgraph")
+library("ggplot2")
+library("egg")
+library("car")
+library("ppcor")
+library("modelsummary")
+library("networktools")
+library("NetworkComparisonTest")
+
+## load data 
+beliefData <- read.csv("data/nukeData.csv")
+#beliefData <- subset(beliefData, year >= 2008 & year <= 2015)
+beliefData <- na.omit(beliefData)
+#nrow(beliefData)
+#names(beliefData)
+
+## risk measures 
+beliefData$rsk <- round((beliefData$nrsk1+beliefData$nrsk2+beliefData$nrsk3+beliefData$nrsk4)/4, 2)
+rskA <- psy::cronbach(data.frame(beliefData$nrsk1,beliefData$nrsk2,beliefData$nrsk3,beliefData$nrsk4))
+
+## benefit measures 
+beliefData$ben <- round((beliefData$nben1+beliefData$nben2+beliefData$nben3+beliefData$nben4)/4, 2)
+benA <- psy::cronbach(data.frame(beliefData$nben1,beliefData$nben2,beliefData$nben3,beliefData$nben4))
+
+## data pre and post Fukushima 
+beliefDataPre <- subset(beliefData, beliefData$fuk==0)
+beliefDataPost <- subset(beliefData, beliefData$fuk==1)
+
+## recode to remove 0's for network comparison
+beliefData$envt_oren <- beliefData$envt_oren+1
+beliefData$nrsk1 <- beliefData$nrsk1+1
+beliefData$nrsk2 <- beliefData$nrsk2+1
+beliefData$nrsk3 <- beliefData$nrsk3+1
+beliefData$nrsk4 <- beliefData$nrsk4+1
+beliefData$nben1 <- beliefData$nben1+1
+beliefData$nben2 <- beliefData$nben2+1
+beliefData$nben3 <- beliefData$nben3+1
+beliefData$nben4 <- beliefData$nben4+1
+beliefData$energyWorry <- beliefData$energyWorry+1
+```
+
+## Motivation 
+
+1. Builds on work conceptualizing and measuring belief systems as networks 
+
+1. Examines policy-oriented learning in the context of belief system networks 
+
+
+## Belief Systems
+
+* **A set of interrelated and connected beliefs**  
+
+* According to the ACF belief systems are hierarchical
+  * _Type_ of belief
+
+
+::: {.notes}
+
+* IV: one type of belief -> DV: another type of belief 
+* "Fuzzy" boundaries (e.g., deep vs policy core)
+* Instrument constituencies and deep core belief coalitions 
+* Inconsistent findings 
+
+
+:::
+
+
+## Belief Systems
+
+* **A set of interrelated and connected beliefs**
+
+* Belief systems as networks 
+  * Nodes are beliefs and edges are the correlations between beliefs 
+  * _Centrality_ of beliefs 
+
+## Belief Systems 
+
+![Development of a Belief System Network](networks.pdf){#fig-modelNetworks}
+
+## Belief System Centrality 
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Betweenness** 
+
+* Sits on the shortest path between nodes
+* Gatekeeper 
+:::
+
+::: {.column width="50%"}
+![](betweeness.png)
+:::
+
+::::
+
+## Belief System Centrality 
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Closeness** 
+
+* How close nodes are in the network 
+* High in closeness means a shorter path to other nodes 
+:::
+
+::: {.column width="50%"}
+![](closeness.png)
+:::
+
+::::
+
+## Belief System Centrality 
+
+:::: {.columns}
+
+::: {.column width="50%"}
+**Strength (Degree)** 
+
+* Degree is the total number of connections in an unweighted network 
+* Strength is the sum of the weighted connections 
+
+:::
+
+::: {.column width="50%"}
+![](strength.png)
+:::
+
+::::
+
+## Policy-Oriented Learning 
+
+**Belief System Networks** 
+
+* Policy-oriented learning is changes in the belief system network 
+  * Structure of the network 
+  * Centrality of beliefs 
+  * _Dynamic constraint_ 
+
+## Nuclear Energy Beliefs 
+
+:::: {.columns}
+
+
+::: {.column width="50%"}
+**Deep core beliefs** 
+
+* Political ideology 
+* Environmental concern 
+* Energy concern 
+:::
+
+
+::: {.column width="50%"}
+**Policy core beliefs** 
+
+* Risks and benefits of nuclear energy 
+
+**Secondary beliefs** 
+
+* Support for the construction of nuclear power plants 
+:::
+
+
+::::
+
+
+
+## Data and Analysis 
+
+* Pooled survey data from annual nationally representative samples of the US population collected from 2008-2023 
+* `r nrow(beliefData)` 
+* Compared belief system networks pre- and post-Fukushima 
+
+## Measures: Deep Core 
+
+* Ideology: self-placement 1 (strongly liberal) to 7 (stongly conservative) scale
+  * Mean = `r round(mean(beliefData$ideology, na.rm=TRUE),2)`
+
+* Environmental concern: combines two questions (fragility of nature, how threatened is the natural environment) into a 0 to 10 scale 
+  * Mean = `r round(mean(beliefData$envt_oren, na.rm = TRUE),2)`
+
+* Energy concern: costs and availability of energy in the US on a 0 to 10 scale 
+  * Mean = `r round(mean(beliefData$energyWorry),2)`
+
+## Measures: Policy Core
+
+**Risks and benefits of nuclear energy on a 0 to 10 scale** 
+
+:::: {.columns}
+
+
+::: {.column width="50%"}
+**Risks** 
+
+* Plant accident (nrsk1)
+* Transportation accident (nrsk2)
+* Terrorist attack (nrsk4)
+* Weapon (nrsk4)
+
+:::
+
+
+
+::: {.column width="50%"}
+**Benefits** 
+
+* No greenhouse gases (nben1)
+* Reliable power (nben2)
+* Energy independence (nben3)
+* Reduced environmental damage (nben4)
+
+:::
+
+
+::::
+
+
+## Measures: Secondary Beliefs
+
+**Nuclear power plants** 
+
+* Support for the construction of new nuclear power plants on a 1 (strongly oppose) to 7 (strongly support) scale 
+  * Mean = `r round(mean(beliefData$morePlants, na.rm = TRUE),3)`
+ 
+## Network Analysis 
+
+* Beliefs are the nodes and the edges are _partial correlation coefficients_ 
+
+* Weighted by the strength of the partial correlations 
+
+* Regularized using "least absolute shrinkage and selection operator" (LASSO)
+
+* Bootstrapping procedure to estimate centrality measures 
+
+* Network Comparison Test 
+
+
+## Results: Pre- and Post-Fukushima Beliefs 
+
+| | **Beliefs**        | **Pre-Fukushima Mean**  | **Post-Fukushima Mean**  | 
+| :----------- | :----------- | -------:| -----:| 
+| **Policy Core: Risks**         | Plant Accident<br> | `r round(mean(beliefDataPre$nrsk1, na.rm = TRUE),2)` | `r round(mean(beliefDataPost$nrsk1, na.rm = TRUE),2)`*** | 
+|                       | Transportation Accident<br> | `r round(mean(beliefDataPre$nrsk2, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$nrsk2, na.rm=TRUE),2)`*** |  
+|                       | Terrorist Attack<br> | `r round(mean(beliefDataPre$nrsk3, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$nrsk3, na.rm=TRUE),2)`+ | 
+|                       | Weapon<br> | `r round(mean(beliefDataPre$nrsk4, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$nrsk4, na.rm=TRUE),2)`*** | 
+| **Policy Core: Benefits**      | No GHG | `r round(mean(beliefDataPre$nben1, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$nben1, na.rm = TRUE),2)`*** | 
+|                       | Reliable Power<br> | `r round(mean(beliefDataPre$nben2, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$nben2, na.rm = TRUE),2)`*** | 
+|                        | Energy Independence<br> | `r round(mean(beliefDataPre$nben3, na.rm=TRUE),3)` | `r round(mean(beliefDataPost$nben3, na.rm = TRUE),2)`*** | 
+|                        | Reduced Environmental Damage<br> | `r round(mean(beliefDataPre$nben4, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$nben4, na.rm=TRUE),2)`*** |
+| **Secondary: More Plants** | Support for more nuclear plants |  `r round(mean(beliefDataPre$morePlants, na.rm=TRUE),2)` | `r round(mean(beliefDataPost$morePlants, na.rm=TRUE),2)`*** |   
+
+
+
+## Results: Pre-Fukushima Network 
+
+```{r}
+#| echo: false
+#| include: false
+#| warning: false
+
+# Pre Network
+beliefNetVars <- c("ideology","envt_oren","energyWorry",
+                   "nrsk1", "nrsk2", "nrsk3", "nrsk4", 
+                   "nben1", "nben2", "nben3", "nben4",
+                   "morePlants")
+beliefNetDataPre <- beliefDataPre[beliefNetVars]
+
+beliefNetNetworkPre <- estimateNetwork(beliefNetDataPre, 
+                                   default = "EBICglasso",
+                                   corMethod = "cor_auto",
+                                   tuning = 0.5)
+#beliefNetNetworkPre #for number of edges and connections
+#beliefNetNetworkPre$results$optnet #for partial correlation coefficients
+
+# Post Network
+beliefNetVars <- c("ideology","envt_oren","energyWorry",
+                   "nrsk1", "nrsk2", "nrsk3", "nrsk4", 
+                   "nben1", "nben2", "nben3", "nben4",
+                   "morePlants")
+beliefNetDataPost <- beliefDataPost[beliefNetVars]
+
+beliefNetNetworkPost <- estimateNetwork(beliefNetDataPost, 
+                                   default = "EBICglasso",
+                                   corMethod = "cor_auto",
+                                   tuning = 0.5)
+#beliefNetNetworkPost #for number of edges and connections
+#beliefNetNetworkPost$results$optnet #for partial correlation coefficients
+```
+
+```{r}
+#| echo: false
+#| include: false
+#| warning: false
+
+load(paste0(getwd(),"/data/network_data_for_replicationPre.RData"))
+
+summary(net_bootPre)
+
+
+net_boot_wholePre <- net_bootPre$bootTable
+# net_boot_strength <- net_boot_whole %>%
+#  filter(type=="strength") %>%
+#  filter(id == c("US \nrisk","GW \nworry"))
+
+net_boot_statPre<-summary(net_bootPre)
+net_boot_stat_centPre <- net_boot_statPre %>%
+  filter(type!="edge")
+
+cent_statPre <- net_boot_stat_centPre %>%
+  dplyr::select(type, id, mean, CIlower, CIupper)
+cent_statPre$id
+
+labels2 <- c("energyWorry","envt_oren","ideology","morePlants","nben1","nben2","nben3","nben4","nrsk1","nrsk2","nrsk3","nrsk4")
+
+cent_statPre$labels <- rep(labels2, 3)
+
+load(paste0(getwd(),"/data/network_data_for_replicationPost.RData"))
+
+summary(net_bootPost)
+
+
+net_boot_wholePost <- net_bootPost$bootTable
+# net_boot_strength <- net_boot_whole %>%
+#  filter(type=="strength") %>%
+#  filter(id == c("US \nrisk","GW \nworry"))
+
+net_boot_statPost<-summary(net_bootPost)
+net_boot_stat_centPost <- net_boot_statPost %>%
+  filter(type!="edge")
+
+cent_statPost <- net_boot_stat_centPost %>%
+  dplyr::select(type, id, mean, CIlower, CIupper)
+cent_statPost$id
+
+labels2 <- c("energyWorry","envt_oren","ideology", "morePlants", "nben1","nben2","nben3","nben4","nrsk1","nrsk2","nrsk3","nrsk4")
+
+cent_statPost$labels <- rep(labels2, 3)
+
+```
+
+```{r}
+#| message: false
+#| results: asis
+#| warning: false
+#| echo: false
+#| fig-cap: Pre-Fukushima Nuclear Energy Belief System Network
+
+groups <- factor(c(
+  rep("Deep Core", 3), 
+  rep("Policy Core", 8),
+  rep("Secondary",1)
+))
+
+groups <- factor(as.character(groups), levels = c("Deep Core", "Policy Core", "Secondary"))
+
+plot(beliefNetNetworkPre, layout = "spring", groups=groups, negDashed = T, legend = F, label.cex = .8, label.scale = T, details = F, theme = "gray")
+
+```
+
+## Results: Post-Fukushima Network 
+
+```{r}
+#| message: false
+#| results: asis
+#| warning: false
+#| echo: false
+#| fig-cap: Post-Fukushima Nuclear Energy Belief System Network
+
+groups <- factor(c(
+  rep("Deep Core", 3), 
+  rep("Policy Core", 8),
+  rep("Secondary",1)
+))
+
+groups <- factor(as.character(groups), levels = c("Deep Core", "Policy Core", "Secondary"))
+
+plot(beliefNetNetworkPost, layout = "spring", groups=groups, negDashed = T, legend = F, label.cex = .8, label.scale = T, details = F, theme = "gray")
+
+```
+
+
+## Results: Network Comparison Test 
+
+**Invariant Network Structure** 
+
+* M = 0.0701, _p_ < 0.05 
+
+* Different edge weights 
+  * _nrsk1_-_nrsk2_ (0.559 vs. 0.489)
+  * _ideology_-_nrsk3_ (0.130 vs. 0.080)
+  * _envt-oren_-_morePlants_ (-0.111 vs. -0.055)
+  * _nrsk1_-_morePlants_ (-0.169 vs. -0.114)
+  * _nben2_-_morePlants_ (0.205 vs. 0.152)
+  
+## Results: Network Comparison Test 
+
+**Centrality measures** 
+
+* Strength centrality 
+  * Increase: _envt-oren_, _nrsk1_, _nben2_ (at _p_ < 0.10), and _morePlants_ 
+  * Decrease: _nrsk4_ (at _p_ < 0.10) and _nben1_
+
+* Closeness centrality: all nodes significantly decreased 
+
+* Betweenness centrality: no significant differences 
+
+## Discussion 
+
+* Belief system networks useful for the ACF 
+
+* Belief system networks and learning 
+  * Some changes (weaker ties post-Fukushima, closeness centrality, strength centrality of some beliefs)
+  * More uncertainty post-Fukushima
+  
+* Lots more work to do 
+
+# Thank you!  
+
+
+

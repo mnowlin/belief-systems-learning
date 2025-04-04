@@ -84,7 +84,7 @@ beliefData$energyWorry <- beliefData$energyWorry+1
 today <- format(Sys.Date(), "%m-%d-%Y")
 ```
 
-**This version**: `r today`
+**Current version**: `r today`
 
 # Introduction 
 
