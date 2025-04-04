@@ -80,13 +80,15 @@ beliefData$energyWorry <- beliefData$energyWorry+1
 * According to the ACF belief systems are hierarchical
   * _Type_ of belief
 
-
+* Issues 
+  * "Fuzzy" boundaries (e.g., deep vs policy core)
+  * Instrument constituencies and deep core belief coalitions 
+  * Inconsistent findings 
+  
 ::: {.notes}
 
 * IV: one type of belief -> DV: another type of belief 
-* "Fuzzy" boundaries (e.g., deep vs policy core)
-* Instrument constituencies and deep core belief coalitions 
-* Inconsistent findings 
+
 
 
 :::
